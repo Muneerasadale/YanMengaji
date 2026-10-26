@@ -13,6 +13,8 @@
       --dark-pink: #ff4d6d;
       --pastel-purple: #e8dff5;
       --pastel-blue: #d8f3dc;
+      --pastel-green: #d8f3dc;
+      --pastel-orange: #ffe5ec;
       --text-main: #5c4d51;
       --text-light: #8d7b80;
       --border-pink: #ffccd5;
@@ -229,6 +231,16 @@
       gap: 3px;
     }
 
+    .event-chip.iqra {
+      background-color: #d8f3dc;
+      color: #1b4332;
+    }
+
+    .event-chip.quran {
+      background-color: #ffccd5;
+      color: #800f2f;
+    }
+
     .event-chip.absent {
       background-color: #ffb3ba;
       color: #5c0000;
@@ -331,7 +343,7 @@
 
     .summary-box {
       flex: 1;
-      min-width: 120px;
+      min-width: 130px;
       background: linear-gradient(135deg, #ffe5ec 0%, #e8dff5 100%);
       padding: 12px;
       border-radius: 16px;
@@ -339,7 +351,7 @@
     }
 
     .summary-box .val {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: bold;
       color: var(--dark-pink);
     }
@@ -377,6 +389,24 @@
       border-radius: 10px;
       font-size: 11px;
       font-weight: bold;
+    }
+
+    .badge-cat {
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: bold;
+      margin-left: 4px;
+    }
+
+    .badge-cat.iqra {
+      background: #d8f3dc;
+      color: #1b4332;
+    }
+
+    .badge-cat.quran {
+      background: #ffe5ec;
+      color: #800f2f;
     }
 
     .student-list {
@@ -561,6 +591,7 @@
             <tr>
               <th>Tarikh</th>
               <th>Murid</th>
+              <th>Tahap</th>
               <th>Status</th>
               <th>Catatan</th>
               <th class="col-action">Tindakan</th>
@@ -598,18 +629,22 @@
         </div>
         <div class="form-group">
           <label>📝 Catatan / Muka Surat (Pilihan)</label>
-          <input type="text" id="notesInput" placeholder="Contoh: Iqra 2 m/s 12">
+          <input type="text" id="notesInput" placeholder="Contoh: Surah Al-Baqarah m/s 15 ATAU Iqra 3 m/s 10">
         </div>
         <button type="submit" class="btn-primary">✨ Simpan Rekod ✨</button>
       </form>
     </div>
 
-    <!-- Tambah Murid -->
+    <!-- Pengurusan Murid -->
     <div class="card">
       <h3>🌷 Pengurusan Data Murid</h3>
-      <form id="addStudentForm" style="display: flex; gap: 8px;">
-        <input type="text" id="newStudentName" placeholder="Nama murid baru..." required>
-        <button type="submit" class="btn-primary" style="width: 100px; margin: 0;">Tambah</button>
+      <form id="addStudentForm" style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <input type="text" id="newStudentName" placeholder="Nama murid baru..." style="flex: 2; min-width: 140px;" required>
+        <select id="newStudentCat" style="flex: 1; min-width: 110px;">
+          <option value="Al-Quran">📖 Al-Quran</option>
+          <option value="Iqra'">📗 Iqra'</option>
+        </select>
+        <button type="submit" class="btn-primary" style="width: 90px; margin: 0;">Tambah</button>
       </form>
       <div class="student-list" id="studentTagList"></div>
     </div>
@@ -658,7 +693,7 @@
       </div>
       <div class="form-group">
         <label>📝 Catatan / Muka Surat (Pilihan)</label>
-        <input type="text" id="modalNotesInput" placeholder="Contoh: Surah Al-Baqarah m/s 5">
+        <input type="text" id="modalNotesInput" placeholder="Contoh: Surah Yasin m/s 2 ATAU Iqra 2 m/s 5">
       </div>
       <button type="submit" class="btn-primary">✨ Simpan Kehadiran ✨</button>
     </form>
@@ -676,6 +711,13 @@
       <div class="form-group">
         <label>Nama Murid</label>
         <input type="text" id="quickStudentName" placeholder="Masukkan nama murid..." required>
+      </div>
+      <div class="form-group">
+        <label>Tahap / Kategori</label>
+        <select id="quickStudentCat">
+          <option value="Al-Quran">📖 Al-Quran</option>
+          <option value="Iqra'">📗 Iqra'</option>
+        </select>
       </div>
       <button type="submit" class="btn-primary">✨ Simpan Murid ✨</button>
     </form>
@@ -703,19 +745,37 @@
     }
   };
 
-  let students = Storage.get('ym_students', ['Alisya', 'Aqil']);
-  if(!Array.isArray(students) || students.length === 0) {
-    students = ['Alisya', 'Aqil'];
+  // Format data murid: Array of objects [{ name: 'Alisya', cat: 'Al-Quran' }, { name: 'Aqil', cat: "Iqra'" }]
+  let rawStudents = Storage.get('ym_students', null);
+  let students = [];
+
+  if (!rawStudents || !Array.isArray(rawStudents) || rawStudents.length === 0) {
+    students = [
+      { name: 'Alisya', cat: 'Al-Quran' },
+      { name: 'Aqil', cat: "Iqra'" }
+    ];
+  } else {
+    // Normalization jika ada format string lama
+    students = rawStudents.map(s => {
+      if (typeof s === 'string') {
+        return { name: s, cat: s.toLowerCase().includes('alisya') ? 'Al-Quran' : "Iqra'" };
+      }
+      return s;
+    });
   }
 
   let records = Storage.get('ym_records', [
-    { id: 1, date: '2026-10-20', student: 'Alisya', status: 'Hadir', notes: 'Kelas Selasa' },
-    { id: 2, date: '2026-10-20', student: 'Aqil', status: 'Hadir', notes: 'Kelas Selasa' },
-    { id: 3, date: '2026-10-22', student: 'Alisya', status: 'Hadir', notes: 'Kelas Khamis' },
-    { id: 4, date: '2026-10-22', student: 'Aqil', status: 'Hadir', notes: 'Kelas Khamis' }
+    { id: 1, date: '2026-10-20', student: 'Alisya', cat: 'Al-Quran', status: 'Hadir', notes: 'Surah Al-Baqarah m/s 5' },
+    { id: 2, date: '2026-10-20', student: 'Aqil', cat: "Iqra'", status: 'Hadir', notes: 'Iqra 3 m/s 12' },
+    { id: 3, date: '2026-10-22', student: 'Alisya', cat: 'Al-Quran', status: 'Hadir', notes: 'Surah Al-Baqarah m/s 8' },
+    { id: 4, date: '2026-10-22', student: 'Aqil', cat: "Iqra'", status: 'Hadir', notes: 'Iqra 3 m/s 15' }
   ]);
 
   let currentDate = new Date();
+
+  function getStudentObj(name) {
+    return students.find(s => s.name === name) || { name: name, cat: "Iqra'" };
+  }
 
   function getStudentIcon(name) {
     if(!name) return '📖';
@@ -804,9 +864,12 @@
 
       dayRecords.forEach(r => {
         const chip = document.createElement('div');
-        chip.className = `event-chip ${r.status !== 'Hadir' ? 'absent' : ''}`;
+        const isQuran = (r.cat === 'Al-Quran');
+        chip.className = `event-chip ${isQuran ? 'quran' : 'iqra'} ${r.status !== 'Hadir' ? 'absent' : ''}`;
+        
         const icon = getStudentIcon(r.student);
-        chip.innerText = `${icon} ${r.student}: ${r.status}`;
+        const catIcon = isQuran ? '📖' : '📗';
+        chip.innerText = `${icon} ${r.student} (${catIcon})`;
         cell.appendChild(chip);
       });
 
@@ -840,16 +903,18 @@
   document.getElementById('modalForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const date = document.getElementById('modalDate').value;
-    const student = document.getElementById('modalStudentSelect').value;
+    const studentName = document.getElementById('modalStudentSelect').value;
     const status = document.getElementById('modalStatusSelect').value;
     const notes = document.getElementById('modalNotesInput').value.trim();
 
-    if(!date || !student) {
+    if(!date || !studentName) {
       showToast('⚠️ Sila pilih nama murid!');
       return;
     }
 
-    records.push({ id: Date.now(), date, student, status, notes });
+    const stObj = getStudentObj(studentName);
+
+    records.push({ id: Date.now(), date, student: studentName, cat: stObj.cat, status, notes });
     saveStorage();
     
     document.getElementById('modalNotesInput').value = '';
@@ -862,15 +927,18 @@
   document.getElementById('quickAddStudentForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const nameInput = document.getElementById('quickStudentName');
+    const catInput = document.getElementById('quickStudentCat');
     const name = nameInput.value.trim();
-    if(name && !students.includes(name)) {
-      students.push(name);
+    const cat = catInput.value;
+
+    if(name && !students.some(s => s.name === name)) {
+      students.push({ name, cat });
       saveStorage();
       populateStudentDropdowns();
       renderStudentManagement();
       closeModal('addStudentModal');
-      showToast(`👧 Murid "${name}" Berjaya Ditambah!`);
-    } else if(students.includes(name)) {
+      showToast(`👧 Murid "${name}" (${cat}) Berjaya Ditambah!`);
+    } else if(students.some(s => s.name === name)) {
       showToast('⚠️ Nama murid ini sudah wujud!');
     }
   });
@@ -882,12 +950,15 @@
 
     summaryContainer.innerHTML = '';
     students.forEach(st => {
-      const count = records.filter(r => r.student === st && r.status === 'Hadir').length;
-      const icon = getStudentIcon(st);
+      const count = records.filter(r => r.student === st.name && r.status === 'Hadir').length;
+      const icon = getStudentIcon(st.name);
+      const catBadge = st.cat === 'Al-Quran' ? '📖 Al-Quran' : '📗 Iqra\'';
+
       summaryContainer.innerHTML += `
         <div class="summary-box">
-          <div style="font-size:13px; color:#6b5b60; font-weight:bold;">${icon} ${st}</div>
-          <div class="val">${count} Kelas</div>
+          <div style="font-size:13px; color:#6b5b60; font-weight:bold;">${icon} ${st.name}</div>
+          <div style="font-size:11px; color:#9d8189; margin-top:2px;">${catBadge}</div>
+          <div class="val" style="margin-top:4px;">${count} Kelas</div>
         </div>
       `;
     });
@@ -896,10 +967,14 @@
     records.slice().sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(r => {
       const badgeClass = r.status === 'Hadir' ? 'badge-hadir' : 'badge-cuti';
       const icon = getStudentIcon(r.student);
+      const isQuran = (r.cat === 'Al-Quran');
+      const catBadge = `<span class="badge-cat ${isQuran ? 'quran' : 'iqra'}">${isQuran ? '📖 Quran' : '📗 Iqra'}</span>`;
+
       tableBody.innerHTML += `
         <tr>
           <td><b>${r.date}</b></td>
           <td>${icon} ${r.student}</td>
+          <td>${catBadge}</td>
           <td><span class="${badgeClass}">${r.status}</span></td>
           <td>${r.notes || '-'}</td>
           <td class="col-action"><button onclick="deleteRecord(${r.id})" style="border:none; background:none; color:red; cursor:pointer;">🗑️</button></td>
@@ -924,8 +999,9 @@
     const selectModal = document.getElementById('modalStudentSelect');
 
     const options = students.map(st => {
-      const icon = getStudentIcon(st);
-      return `<option value="${st}">${icon} ${st}</option>`;
+      const icon = getStudentIcon(st.name);
+      const catTag = st.cat === 'Al-Quran' ? '📖 Quran' : '📗 Iqra';
+      return `<option value="${st.name}">${icon} ${st.name} (${catTag})</option>`;
     }).join('');
 
     if(selectMain) selectMain.innerHTML = options || '<option value="">-- Tiada Murid --</option>';
@@ -938,11 +1014,14 @@
     tagList.innerHTML = '';
 
     students.forEach(st => {
-      const icon = getStudentIcon(st);
+      const icon = getStudentIcon(st.name);
+      const isQuran = (st.cat === 'Al-Quran');
+      const catTag = `<span class="badge-cat ${isQuran ? 'quran' : 'iqra'}">${isQuran ? '📖 Quran' : '📗 Iqra'}</span>`;
+      
       tagList.innerHTML += `
         <div class="student-tag">
-          ${icon} ${st}
-          <button class="btn-delete-sm" onclick="deleteStudent('${st}')">✕</button>
+          ${icon} <strong>${st.name}</strong> ${catTag}
+          <button class="btn-delete-sm" onclick="deleteStudent('${st.name}')">✕</button>
         </div>`;
     });
 
@@ -953,8 +1032,10 @@
 
   function deleteStudent(name) {
     if(confirm(`Adakah anda pasti mahu memadam murid "${name}"?`)) {
-      students = students.filter(s => s !== name);
-      if(students.length === 0) students = ['Alisya', 'Aqil'];
+      students = students.filter(s => s.name !== name);
+      if(students.length === 0) {
+        students = [{ name: 'Alisya', cat: 'Al-Quran' }, { name: 'Aqil', cat: "Iqra'" }];
+      }
       saveStorage();
       renderStudentManagement();
       renderReports();
@@ -966,16 +1047,18 @@
   document.getElementById('attendanceForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const date = document.getElementById('classDate').value;
-    const student = document.getElementById('studentSelect').value;
+    const studentName = document.getElementById('studentSelect').value;
     const status = document.getElementById('statusSelect').value;
     const notes = document.getElementById('notesInput').value.trim();
 
-    if(!date || !student) {
+    if(!date || !studentName) {
       showToast('⚠️ Sila pastikan tarikh dan murid dipilih!');
       return;
     }
 
-    records.push({ id: Date.now(), date, student, status, notes });
+    const stObj = getStudentObj(studentName);
+
+    records.push({ id: Date.now(), date, student: studentName, cat: stObj.cat, status, notes });
     saveStorage();
     
     document.getElementById('notesInput').value = '';
@@ -987,15 +1070,18 @@
   document.getElementById('addStudentForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const nameInput = document.getElementById('newStudentName');
+    const catInput = document.getElementById('newStudentCat');
     const name = nameInput.value.trim();
-    if(name && !students.includes(name)) {
-      students.push(name);
+    const cat = catInput.value;
+
+    if(name && !students.some(s => s.name === name)) {
+      students.push({ name, cat });
       saveStorage();
       nameInput.value = '';
       renderStudentManagement();
       renderReports();
-      showToast(`👧 Murid "${name}" Berjaya Ditambah!`);
-    } else if(students.includes(name)) {
+      showToast(`👧 Murid "${name}" (${cat}) Berjaya Ditambah!`);
+    } else if(students.some(s => s.name === name)) {
       showToast('⚠️ Nama murid ini sudah wujud!');
     }
   });
