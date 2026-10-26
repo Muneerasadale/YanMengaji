@@ -13,8 +13,6 @@
       --dark-pink: #ff4d6d;
       --pastel-purple: #e8dff5;
       --pastel-blue: #d8f3dc;
-      --pastel-green: #d8f3dc;
-      --pastel-orange: #ffe5ec;
       --text-main: #5c4d51;
       --text-light: #8d7b80;
       --border-pink: #ffccd5;
@@ -42,497 +40,108 @@
       position: relative;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+    header { text-align: center; margin-bottom: 20px; }
+    header h1 { font-family: 'Fredoka', cursive; color: var(--primary-pink); font-size: 32px; }
+    header p { font-size: 13px; color: var(--text-light); }
 
-    header h1 {
-      font-family: 'Fredoka', cursive;
-      color: var(--primary-pink);
-      font-size: 32px;
-      letter-spacing: 1px;
-    }
-
-    header p {
-      font-size: 13px;
-      color: var(--text-light);
-    }
-
-    /* Toast Notification */
     .toast-notification {
       position: fixed;
-      top: 20px;
-      left: 50%;
+      top: 20px; left: 50%;
       transform: translateX(-50%) translateY(-100px);
       background: linear-gradient(135deg, #ff8fa3, #ff4d6d);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 25px;
-      font-family: 'Fredoka', cursive;
-      font-size: 15px;
+      color: white; padding: 12px 24px; border-radius: 25px;
+      font-family: 'Fredoka', cursive; font-size: 15px;
       box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
-      z-index: 2000;
-      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-      opacity: 0;
-      pointer-events: none;
+      z-index: 2000; transition: all 0.4s ease; opacity: 0; pointer-events: none;
+    }
+    .toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    .loading-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.7); border-radius: 28px;
+      display: flex; justify-content: center; align-items: center;
+      font-family: 'Fredoka', cursive; color: var(--dark-pink); font-size: 18px; z-index: 500;
     }
 
-    .toast-notification.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    /* Navigation Tabs */
     .nav-tabs {
-      display: flex;
-      gap: 8px;
-      background: #fff4f6;
-      padding: 6px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      justify-content: space-around;
+      display: flex; gap: 8px; background: #fff4f6; padding: 6px;
+      border-radius: 20px; margin-bottom: 20px; justify-content: space-around;
     }
 
     .tab-btn {
-      flex: 1;
-      padding: 12px 10px;
-      border: none;
-      border-radius: 16px;
-      background: transparent;
-      font-family: 'Fredoka', cursive;
-      font-size: 14px;
-      color: var(--text-light);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      flex: 1; padding: 12px 10px; border: none; border-radius: 16px;
+      background: transparent; font-family: 'Fredoka', cursive; font-size: 14px;
+      color: var(--text-light); cursor: pointer; transition: all 0.3s ease;
     }
 
-    .tab-btn.active {
-      background: var(--primary-pink);
-      color: white;
-      box-shadow: 0 4px 12px rgba(255, 143, 163, 0.4);
-    }
+    .tab-btn.active { background: var(--primary-pink); color: white; }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Calendar Styling */
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .calendar-header h2 { font-family: 'Fredoka', cursive; color: var(--dark-pink); font-size: 20px; }
 
-    .calendar-header h2 {
-      font-family: 'Fredoka', cursive;
-      color: var(--dark-pink);
-      font-size: 20px;
-    }
+    .btn-icon { background: #ffe5ec; border: none; color: var(--dark-pink); padding: 8px 14px; border-radius: 12px; font-weight: bold; cursor: pointer; }
 
-    .btn-icon {
-      background: #ffe5ec;
-      border: none;
-      color: var(--dark-pink);
-      padding: 8px 14px;
-      border-radius: 12px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-      text-align: center;
-    }
-
-    .day-name {
-      font-weight: bold;
-      font-size: 12px;
-      color: var(--primary-pink);
-      padding-bottom: 6px;
-    }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+    .day-name { font-weight: bold; font-size: 12px; color: var(--primary-pink); padding-bottom: 6px; }
 
     .day-cell {
-      min-height: 85px;
-      background: #fffdfd;
-      border: 1.5px solid var(--border-pink);
-      border-radius: 14px;
-      padding: 4px;
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
-      overflow: hidden;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.2s ease;
+      min-height: 85px; background: #fffdfd; border: 1.5px solid var(--border-pink);
+      border-radius: 14px; padding: 4px; font-size: 12px; display: flex; flex-direction: column;
+      align-items: flex-start; overflow: hidden; cursor: pointer; position: relative;
     }
+    .day-cell:hover { background: #fff0f5; }
+    .day-cell.empty { background: #fafafa; border-color: #f0f0f0; cursor: default; }
 
-    .day-cell:hover {
-      background: #fff0f5;
-      border-color: var(--primary-pink);
-      transform: translateY(-2px);
-    }
-
-    .day-cell.empty {
-      background: #fafafa;
-      border-color: #f0f0f0;
-      cursor: default;
-    }
-
-    .day-cell.empty:hover {
-      transform: none;
-    }
-
-    .day-top-bar {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 3px;
-    }
-
-    .day-badge-icon {
-      font-size: 11px;
-      background: #ffe5ec;
-      padding: 1px 4px;
-      border-radius: 8px;
-    }
-
-    .day-number {
-      font-weight: bold;
-      color: var(--text-main);
-      font-size: 11px;
-      margin-left: auto;
-    }
+    .day-top-bar { width: 100%; display: flex; justify-content: space-between; margin-bottom: 3px; }
+    .day-badge-icon { font-size: 11px; background: #ffe5ec; padding: 1px 4px; border-radius: 8px; }
+    .day-number { font-weight: bold; color: var(--text-main); font-size: 11px; margin-left: auto; }
 
     .event-chip {
-      width: 100%;
-      background-color: #ffccd5;
-      color: #800f2f;
-      font-size: 9px;
-      padding: 2px 4px;
-      border-radius: 8px;
-      margin-top: 2px;
-      text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 3px;
+      width: 100%; font-size: 9px; padding: 2px 4px; border-radius: 8px; margin-top: 2px;
+      text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600;
     }
+    .event-chip.iqra { background-color: #d8f3dc; color: #1b4332; }
+    .event-chip.quran { background-color: #ffccd5; color: #800f2f; }
+    .event-chip.absent { background-color: #ffb3ba; color: #5c0000; }
 
-    .event-chip.iqra {
-      background-color: #d8f3dc;
-      color: #1b4332;
-    }
+    .card { background: #fffdfd; border: 2px solid #ffe0e6; border-radius: 20px; padding: 16px; margin-bottom: 16px; }
+    .card h3 { font-family: 'Fredoka', cursive; color: var(--primary-pink); margin-bottom: 12px; }
 
-    .event-chip.quran {
-      background-color: #ffccd5;
-      color: #800f2f;
-    }
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: #72515e; }
+    input, select { width: 100%; padding: 10px; border: 2px solid var(--border-pink); border-radius: 12px; font-family: inherit; outline: none; background: #fff9fa; font-size: 13px; }
 
-    .event-chip.absent {
-      background-color: #ffb3ba;
-      color: #5c0000;
-    }
+    .input-with-btn { display: flex; gap: 8px; }
+    .btn-secondary { background: #ffe5ec; color: var(--dark-pink); border: 2px solid var(--border-pink); padding: 8px 14px; border-radius: 12px; font-family: 'Fredoka', cursive; font-size: 13px; cursor: pointer; }
+    .btn-primary { width: 100%; background: var(--primary-pink); color: white; border: none; padding: 12px; border-radius: 14px; font-family: 'Fredoka', cursive; font-size: 16px; cursor: pointer; margin-top: 6px; }
 
-    /* Cards & Form */
-    .card {
-      background: #fffdfd;
-      border: 2px solid #ffe0e6;
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
+    .summary-bar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+    .summary-box { flex: 1; min-width: 130px; background: linear-gradient(135deg, #ffe5ec 0%, #e8dff5 100%); padding: 12px; border-radius: 16px; text-align: center; }
+    .summary-box .val { font-size: 20px; font-weight: bold; color: var(--dark-pink); }
 
-    .card h3 {
-      font-family: 'Fredoka', cursive;
-      color: var(--primary-pink);
-      margin-bottom: 12px;
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ffe0e6; }
+    th { color: var(--primary-pink); font-family: 'Fredoka', cursive; }
 
-    .form-group {
-      margin-bottom: 12px;
-    }
+    .badge-hadir { background: var(--pastel-blue); color: #1b4332; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; }
+    .badge-cuti { background: #ffb3ba; color: #5c0000; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; }
+    .badge-cat { padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: bold; margin-left: 4px; }
+    .badge-cat.iqra { background: #d8f3dc; color: #1b4332; }
+    .badge-cat.quran { background: #ffe5ec; color: #800f2f; }
 
-    label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 4px;
-      color: #72515e;
-    }
+    .student-list { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .student-tag { background: var(--pastel-purple); color: #4a4e69; padding: 6px 12px; border-radius: 12px; font-weight: bold; font-size: 12px; display: flex; align-items: center; gap: 6px; }
+    .btn-delete-sm { background: none; border: none; color: #ff4d6d; cursor: pointer; font-weight: bold; }
 
-    input, select {
-      width: 100%;
-      padding: 10px;
-      border: 2px solid var(--border-pink);
-      border-radius: 12px;
-      font-family: inherit;
-      outline: none;
-      background: #fff9fa;
-      font-size: 13px;
-    }
-
-    .input-with-btn {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn-secondary {
-      background: #ffe5ec;
-      color: var(--dark-pink);
-      border: 2px solid var(--border-pink);
-      padding: 8px 14px;
-      border-radius: 12px;
-      font-family: 'Fredoka', cursive;
-      font-size: 13px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-    }
-
-    .btn-secondary:hover {
-      background: var(--primary-pink);
-      color: white;
-    }
-
-    .btn-primary {
-      width: 100%;
-      background: var(--primary-pink);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 14px;
-      font-family: 'Fredoka', cursive;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(255, 143, 163, 0.3);
-      margin-top: 6px;
-      transition: background 0.2s ease;
-    }
-
-    .btn-primary:hover {
-      background: var(--dark-pink);
-    }
-
-    /* Reports Table */
-    .report-header-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .summary-bar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
-
-    .summary-box {
-      flex: 1;
-      min-width: 130px;
-      background: linear-gradient(135deg, #ffe5ec 0%, #e8dff5 100%);
-      padding: 12px;
-      border-radius: 16px;
-      text-align: center;
-    }
-
-    .summary-box .val {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--dark-pink);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    th, td {
-      padding: 10px;
-      text-align: left;
-      border-bottom: 1px solid #ffe0e6;
-    }
-
-    th {
-      color: var(--primary-pink);
-      font-family: 'Fredoka', cursive;
-    }
-
-    .badge-hadir {
-      background: var(--pastel-blue);
-      color: #1b4332;
-      padding: 3px 8px;
-      border-radius: 10px;
-      font-size: 11px;
-      font-weight: bold;
-    }
-
-    .badge-cuti {
-      background: #ffb3ba;
-      color: #5c0000;
-      padding: 3px 8px;
-      border-radius: 10px;
-      font-size: 11px;
-      font-weight: bold;
-    }
-
-    .badge-cat {
-      padding: 2px 6px;
-      border-radius: 8px;
-      font-size: 10px;
-      font-weight: bold;
-      margin-left: 4px;
-    }
-
-    .badge-cat.iqra {
-      background: #d8f3dc;
-      color: #1b4332;
-    }
-
-    .badge-cat.quran {
-      background: #ffe5ec;
-      color: #800f2f;
-    }
-
-    .student-list {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    .student-tag {
-      background: var(--pastel-purple);
-      color: #4a4e69;
-      padding: 6px 12px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-delete-sm {
-      background: none;
-      border: none;
-      color: #ff4d6d;
-      cursor: pointer;
-      font-weight: bold;
-      margin-left: 4px;
-    }
-
-    /* Modal Popup */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(92, 77, 81, 0.4);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      backdrop-filter: blur(3px);
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal-card {
-      background: var(--card-white);
-      border-radius: 24px;
-      padding: 24px;
-      width: 90%;
-      max-width: 420px;
-      border: 3px solid #ffe5ec;
-      box-shadow: 0 10px 30px rgba(255, 143, 163, 0.3);
-      animation: popIn 0.25s ease-out;
-    }
-
-    @keyframes popIn {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .modal-header h3 {
-      font-family: 'Fredoka', cursive;
-      color: var(--primary-pink);
-    }
-
-    .btn-close {
-      background: #ffe5ec;
-      border: none;
-      color: var(--dark-pink);
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    /* Print Styles */
-    @media print {
-      body {
-        background: #ffffff !important;
-        padding: 0 !important;
-        color: #000000 !important;
-      }
-      .app-container {
-        box-shadow: none !important;
-        border: none !important;
-        padding: 0 !important;
-        max-width: 100% !important;
-      }
-      header p, .nav-tabs, .btn-primary, .btn-secondary, .btn-print, .btn-icon, .btn-delete-sm, .modal-overlay, #tab-calendar, #tab-input, .no-print, .toast-notification {
-        display: none !important;
-      }
-      #tab-reports {
-        display: block !important;
-      }
-      .summary-box {
-        border: 1px solid #ffccd5 !important;
-        background: #fff0f5 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .card {
-        border: 1px solid #ffccd5 !important;
-        padding: 10px !important;
-      }
-      table {
-        width: 100% !important;
-        border-collapse: collapse !important;
-      }
-      th, td {
-        border: 1px solid #ffccd5 !important;
-        padding: 8px !important;
-      }
-      .col-action {
-        display: none !important;
-      }
-    }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(92, 77, 81, 0.4); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(3px); }
+    .modal-overlay.active { display: flex; }
+    .modal-card { background: var(--card-white); border-radius: 24px; padding: 24px; width: 90%; max-width: 420px; border: 3px solid #ffe5ec; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .modal-header h3 { font-family: 'Fredoka', cursive; color: var(--primary-pink); }
+    .btn-close { background: #ffe5ec; border: none; color: var(--dark-pink); width: 30px; height: 30px; border-radius: 50%; font-weight: bold; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -540,9 +149,11 @@
 <div class="toast-notification" id="toastMsg">✨ Rekod Berjaya Disimpan! ✨</div>
 
 <div class="app-container">
+  <div class="loading-overlay" id="loading">☁️ Menyambung ke Google Sheets...</div>
+
   <header>
     <h1>🌸 Yan Mengaji 🌸</h1>
-    <p>Sistem Pengurusan & Rekod Kehadiran Kelas Mengaji</p>
+    <p>Sistem Kehadiran Cloud Auto-Sync</p>
   </header>
 
   <nav class="nav-tabs">
@@ -563,39 +174,24 @@
       <button class="btn-secondary" onclick="openAddStudentModal()" style="font-size: 11px; padding: 4px 10px;">➕ Tambah Murid</button>
     </div>
     <div class="calendar-grid">
-      <div class="day-name">Ahad</div>
-      <div class="day-name">Isn</div>
-      <div class="day-name">Sel</div>
-      <div class="day-name">Rab</div>
-      <div class="day-name">Kha</div>
-      <div class="day-name">Jum</div>
-      <div class="day-name">Sab</div>
+      <div class="day-name">Ahad</div><div class="day-name">Isn</div><div class="day-name">Sel</div>
+      <div class="day-name">Rab</div><div class="day-name">Kha</div><div class="day-name">Jum</div><div class="day-name">Sab</div>
     </div>
     <div class="calendar-grid" id="calendarDays"></div>
   </div>
 
-  <!-- TAB 2: LAPORAN & REKOD -->
+  <!-- TAB 2: LAPORAN -->
   <div id="tab-reports" class="tab-content">
-    <div class="report-header-bar">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
       <h3 style="font-family: 'Fredoka', cursive; color: var(--primary-pink); font-size: 20px;">📜 Ringkasan Laporan</h3>
-      <button class="btn-primary btn-print" onclick="window.print()" style="width: auto; padding: 8px 16px; margin: 0; font-size: 13px;">🖨️ Cetak Laporan</button>
+      <button class="btn-primary" onclick="window.print()" style="width: auto; padding: 8px 16px; margin: 0; font-size: 13px;">🖨️ Cetak</button>
     </div>
-    
     <div class="summary-bar" id="summaryContainer"></div>
-    
     <div class="card">
-      <h3 style="font-size: 16px; margin-bottom: 10px;">Senarai Kehadiran Murid</h3>
       <div style="overflow-x: auto;">
         <table>
           <thead>
-            <tr>
-              <th>Tarikh</th>
-              <th>Murid</th>
-              <th>Tahap</th>
-              <th>Status</th>
-              <th>Catatan</th>
-              <th class="col-action">Tindakan</th>
-            </tr>
+            <tr><th>Tarikh</th><th>Murid</th><th>Tahap</th><th>Status</th><th>Catatan</th><th>Tindakan</th></tr>
           </thead>
           <tbody id="reportTableBody"></tbody>
         </table>
@@ -603,43 +199,42 @@
     </div>
   </div>
 
-  <!-- TAB 3: DATA MURID & INPUT KEHADIRAN -->
+  <!-- TAB 3: INPUT -->
   <div id="tab-input" class="tab-content">
-    <!-- Form Tambah Rekod -->
     <div class="card">
       <h3>✍️ Rekod Kehadiran Kelas</h3>
       <form id="attendanceForm">
-        <div class="form-group">
-          <label>📅 Tarikh Kelas</label>
-          <input type="date" id="classDate" required>
-        </div>
+        <div class="form-group"><label>📅 Tarikh Kelas</label><input type="date" id="classDate" required></div>
         <div class="form-group">
           <label>👧👦 Pilih Murid</label>
           <div class="input-with-btn">
-            <select id="studentSelect" required></select>
+            <select id="studentSelect" onchange="autoSyncCat('studentSelect', 'classCatSelect')" required></select>
             <button type="button" class="btn-secondary" onclick="openAddStudentModal()">➕ Tambah</button>
           </div>
         </div>
         <div class="form-group">
-          <label>📌 Status</label>
+          <label>📖/📗 Tahap Bacaan Kelas</label>
+          <select id="classCatSelect">
+            <option value="Al-Quran">📖 Al-Quran</option>
+            <option value="Iqra'">📗 Iqra'</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>📌 Status Kehadiran</label>
           <select id="statusSelect">
             <option value="Hadir">Hadir</option>
             <option value="Cuti / Batal">Cuti / Batal</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>📝 Catatan / Muka Surat (Pilihan)</label>
-          <input type="text" id="notesInput" placeholder="Contoh: Surah Al-Baqarah m/s 15 ATAU Iqra 3 m/s 10">
-        </div>
-        <button type="submit" class="btn-primary">✨ Simpan Rekod ✨</button>
+        <div class="form-group"><label>📝 Catatan / Muka Surat</label><input type="text" id="notesInput" placeholder="Contoh: Iqra 3 m/s 10"></div>
+        <button type="submit" class="btn-primary">✨ Simpan Ke Cloud ✨</button>
       </form>
     </div>
 
-    <!-- Pengurusan Murid -->
     <div class="card">
       <h3>🌷 Pengurusan Data Murid</h3>
       <form id="addStudentForm" style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <input type="text" id="newStudentName" placeholder="Nama murid baru..." style="flex: 2; min-width: 140px;" required>
+        <input type="text" id="newStudentName" placeholder="Nama murid..." style="flex: 2; min-width: 140px;" required>
         <select id="newStudentCat" style="flex: 1; min-width: 110px;">
           <option value="Al-Quran">📖 Al-Quran</option>
           <option value="Iqra'">📗 Iqra'</option>
@@ -648,41 +243,32 @@
       </form>
       <div class="student-list" id="studentTagList"></div>
     </div>
-
-    <!-- Backup & Restore Data -->
-    <div class="card">
-      <h3>💾 Muat Naik & Backup Rekod</h3>
-      <p style="font-size: 12px; color: var(--text-light); margin-bottom: 12px;">Simpan backup fail data ke telefon/laptop atau muat naik fail backup pilihan anda.</p>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <button class="btn-secondary" onclick="exportData()" style="flex: 1;">📤 Muat Turun Backup (JSON)</button>
-        <label class="btn-secondary" style="flex: 1; text-align: center; cursor: pointer;">
-          📥 Muat Naik Backup (JSON)
-          <input type="file" id="importFile" accept=".json" onchange="importData(event)" style="display: none;">
-        </label>
-      </div>
-    </div>
   </div>
 </div>
 
-<!-- MODAL QUICK ADD DARIPADA KALENDAR -->
+<!-- MODALS -->
 <div class="modal-overlay" id="quickAddModal">
   <div class="modal-card">
     <div class="modal-header">
-      <h3 id="modalTitle">✨ Tambah Rekod Kelas</h3>
+      <h3>✨ Tambah Rekod Kelas</h3>
       <button class="btn-close" onclick="closeModal('quickAddModal')">✕</button>
     </div>
     <form id="modalForm">
       <input type="hidden" id="modalDate">
-      <div class="form-group">
-        <label>📅 Tarikh Dipilih</label>
-        <input type="text" id="modalDateDisplay" readonly style="font-weight: bold; color: var(--dark-pink);">
-      </div>
+      <div class="form-group"><label>📅 Tarikh Dipilih</label><input type="text" id="modalDateDisplay" readonly style="font-weight: bold; color: var(--dark-pink);"></div>
       <div class="form-group">
         <label>👧👦 Pilih Murid</label>
         <div class="input-with-btn">
-          <select id="modalStudentSelect" required></select>
+          <select id="modalStudentSelect" onchange="autoSyncCat('modalStudentSelect', 'modalClassCatSelect')" required></select>
           <button type="button" class="btn-secondary" onclick="openAddStudentModal()">➕ Tambah</button>
         </div>
+      </div>
+      <div class="form-group">
+        <label>📖/📗 Tahap Bacaan Kelas</label>
+        <select id="modalClassCatSelect">
+          <option value="Al-Quran">📖 Al-Quran</option>
+          <option value="Iqra'">📗 Iqra'</option>
+        </select>
       </div>
       <div class="form-group">
         <label>📌 Status Kehadiran</label>
@@ -691,16 +277,12 @@
           <option value="Cuti / Batal">Cuti / Batal</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>📝 Catatan / Muka Surat (Pilihan)</label>
-        <input type="text" id="modalNotesInput" placeholder="Contoh: Surah Yasin m/s 2 ATAU Iqra 2 m/s 5">
-      </div>
-      <button type="submit" class="btn-primary">✨ Simpan Kehadiran ✨</button>
+      <div class="form-group"><label>📝 Catatan / Muka Surat</label><input type="text" id="modalNotesInput" placeholder="Contoh: Surah Yasin m/s 2"></div>
+      <button type="submit" class="btn-primary">✨ Simpan Ke Cloud ✨</button>
     </form>
   </div>
 </div>
 
-<!-- MODAL POPUP TAMBAH MURID BARU -->
 <div class="modal-overlay" id="addStudentModal">
   <div class="modal-card">
     <div class="modal-header">
@@ -708,12 +290,9 @@
       <button class="btn-close" onclick="closeModal('addStudentModal')">✕</button>
     </div>
     <form id="quickAddStudentForm">
+      <div class="form-group"><label>Nama Murid</label><input type="text" id="quickStudentName" placeholder="Masukkan nama..." required></div>
       <div class="form-group">
-        <label>Nama Murid</label>
-        <input type="text" id="quickStudentName" placeholder="Masukkan nama murid..." required>
-      </div>
-      <div class="form-group">
-        <label>Tahap / Kategori</label>
+        <label>Tahap Utama</label>
         <select id="quickStudentCat">
           <option value="Al-Quran">📖 Al-Quran</option>
           <option value="Iqra'">📗 Iqra'</option>
@@ -725,65 +304,12 @@
 </div>
 
 <script>
-  // Safe LocalStorage Wrapper
-  const Storage = {
-    get: function(key, fallback) {
-      try {
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : fallback;
-      } catch(e) {
-        console.warn('LocalStorage Read Error:', e);
-        return fallback;
-      }
-    },
-    set: function(key, value) {
-      try {
-        localStorage.setItem(key, JSON.stringify(value));
-      } catch(e) {
-        console.warn('LocalStorage Write Error:', e);
-      }
-    }
-  };
-
-  // Format data murid: Array of objects [{ name: 'Alisya', cat: 'Al-Quran' }, { name: 'Aqil', cat: "Iqra'" }]
-  let rawStudents = Storage.get('ym_students', null);
   let students = [];
-
-  if (!rawStudents || !Array.isArray(rawStudents) || rawStudents.length === 0) {
-    students = [
-      { name: 'Alisya', cat: 'Al-Quran' },
-      { name: 'Aqil', cat: "Iqra'" }
-    ];
-  } else {
-    // Normalization jika ada format string lama
-    students = rawStudents.map(s => {
-      if (typeof s === 'string') {
-        return { name: s, cat: s.toLowerCase().includes('alisya') ? 'Al-Quran' : "Iqra'" };
-      }
-      return s;
-    });
-  }
-
-  let records = Storage.get('ym_records', [
-    { id: 1, date: '2026-10-20', student: 'Alisya', cat: 'Al-Quran', status: 'Hadir', notes: 'Surah Al-Baqarah m/s 5' },
-    { id: 2, date: '2026-10-20', student: 'Aqil', cat: "Iqra'", status: 'Hadir', notes: 'Iqra 3 m/s 12' },
-    { id: 3, date: '2026-10-22', student: 'Alisya', cat: 'Al-Quran', status: 'Hadir', notes: 'Surah Al-Baqarah m/s 8' },
-    { id: 4, date: '2026-10-22', student: 'Aqil', cat: "Iqra'", status: 'Hadir', notes: 'Iqra 3 m/s 15' }
-  ]);
-
+  let records = [];
   let currentDate = new Date();
 
-  function getStudentObj(name) {
-    return students.find(s => s.name === name) || { name: name, cat: "Iqra'" };
-  }
-
-  function getStudentIcon(name) {
-    if(!name) return '📖';
-    const n = name.toLowerCase();
-    if(n.includes('alisya') || n.includes('siti') || n.includes('nur') || n.includes('aisyah') || n.includes('putri')) {
-      return '🧕';
-    }
-    return '👦';
+  function showLoading(show) {
+    document.getElementById('loading').style.display = show ? 'flex' : 'none';
   }
 
   function showToast(text) {
@@ -793,34 +319,57 @@
     setTimeout(() => toast.classList.remove('show'), 2500);
   }
 
-  function saveStorage() {
-    Storage.set('ym_students', students);
-    Storage.set('ym_records', records);
+  function fetchCloudData() {
+    showLoading(true);
+    google.script.run.withSuccessHandler(function(res) {
+      students = res.students || [];
+      records = res.records || [];
+      renderAll();
+      showLoading(false);
+    }).getData();
+  }
+
+  function renderAll() {
+    populateStudentDropdowns();
+    renderCalendar();
+    renderReports();
+    renderStudentManagement();
+  }
+
+  function getStudentObj(name) {
+    return students.find(s => s.name === name) || { name: name, cat: "Iqra'" };
+  }
+
+  function getStudentIcon(name) {
+    if(!name) return '📖';
+    const n = name.toLowerCase();
+    if(n.includes('alisya') || n.includes('siti') || n.includes('nur') || n.includes('aisyah')) return '🧕';
+    return '👦';
+  }
+
+  function autoSyncCat(studentSelectId, catSelectId) {
+    const stName = document.getElementById(studentSelectId).value;
+    const stObj = getStudentObj(stName);
+    if(stObj && document.getElementById(catSelectId)) {
+      document.getElementById(catSelectId).value = stObj.cat;
+    }
   }
 
   function switchTab(btn, tabId) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    
     if(btn) btn.classList.add('active');
     document.getElementById(tabId).classList.add('active');
-
-    if(tabId === 'tab-calendar') renderCalendar();
-    if(tabId === 'tab-reports') renderReports();
-    if(tabId === 'tab-input') renderStudentManagement();
   }
 
-  // --- LOGIK KALENDAR ---
   function renderCalendar() {
     const monthYearText = document.getElementById('calendarMonthYear');
     const calendarDays = document.getElementById('calendarDays');
-    
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
     const monthNames = ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember"];
     monthYearText.innerText = `${monthNames[month]} ${year}`;
-
     calendarDays.innerHTML = '';
 
     const firstDay = new Date(year, month, 1).getDay();
@@ -835,14 +384,11 @@
     for (let day = 1; day <= totalDays; day++) {
       const cell = document.createElement('div');
       cell.className = 'day-cell';
-
       const formattedMonth = String(month + 1).padStart(2, '0');
       const formattedDay = String(day).padStart(2, '0');
       const dateStr = `${year}-${formattedMonth}-${formattedDay}`;
 
-      cell.onclick = function() {
-        openQuickAddModal(dateStr);
-      };
+      cell.onclick = function() { openQuickAddModal(dateStr); };
 
       const dayTopBar = document.createElement('div');
       dayTopBar.className = 'day-top-bar';
@@ -859,17 +405,14 @@
       dayNum.className = 'day-number';
       dayNum.innerText = day;
       dayTopBar.appendChild(dayNum);
-
       cell.appendChild(dayTopBar);
 
       dayRecords.forEach(r => {
         const chip = document.createElement('div');
         const isQuran = (r.cat === 'Al-Quran');
         chip.className = `event-chip ${isQuran ? 'quran' : 'iqra'} ${r.status !== 'Hadir' ? 'absent' : ''}`;
-        
         const icon = getStudentIcon(r.student);
-        const catIcon = isQuran ? '📖' : '📗';
-        chip.innerText = `${icon} ${r.student} (${catIcon})`;
+        chip.innerText = `${icon} ${r.student} (${isQuran ? '📖' : '📗'})`;
         cell.appendChild(chip);
       });
 
@@ -882,12 +425,11 @@
     renderCalendar();
   }
 
-  // --- MODAL POPUP LOGIK ---
   function openQuickAddModal(dateStr) {
     document.getElementById('modalDate').value = dateStr;
     document.getElementById('modalDateDisplay').value = dateStr;
     populateStudentDropdowns();
-
+    autoSyncCat('modalStudentSelect', 'modalClassCatSelect');
     document.getElementById('quickAddModal').classList.add('active');
   }
 
@@ -903,47 +445,40 @@
   document.getElementById('modalForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const date = document.getElementById('modalDate').value;
-    const studentName = document.getElementById('modalStudentSelect').value;
+    const student = document.getElementById('modalStudentSelect').value;
+    const cat = document.getElementById('modalClassCatSelect').value;
     const status = document.getElementById('modalStatusSelect').value;
     const notes = document.getElementById('modalNotesInput').value.trim();
 
-    if(!date || !studentName) {
-      showToast('⚠️ Sila pilih nama murid!');
-      return;
-    }
-
-    const stObj = getStudentObj(studentName);
-
-    records.push({ id: Date.now(), date, student: studentName, cat: stObj.cat, status, notes });
-    saveStorage();
-    
-    document.getElementById('modalNotesInput').value = '';
+    showLoading(true);
     closeModal('quickAddModal');
-    renderCalendar();
-    renderReports();
-    showToast('✨ Kehadiran Berjaya Disimpan! ✨');
+
+    google.script.run.withSuccessHandler(function(res) {
+      students = res.students;
+      records = res.records;
+      renderAll();
+      showLoading(false);
+      showToast('☁️ Kehadiran Berjaya Disimpan ke Cloud!');
+    }).addRecord({ id: Date.now(), date: date, student: student, cat: cat, status: status, notes: notes });
   });
 
   document.getElementById('quickAddStudentForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const nameInput = document.getElementById('quickStudentName');
-    const catInput = document.getElementById('quickStudentCat');
-    const name = nameInput.value.trim();
-    const cat = catInput.value;
+    const name = document.getElementById('quickStudentName').value.trim();
+    const cat = document.getElementById('quickStudentCat').value;
 
-    if(name && !students.some(s => s.name === name)) {
-      students.push({ name, cat });
-      saveStorage();
-      populateStudentDropdowns();
-      renderStudentManagement();
-      closeModal('addStudentModal');
-      showToast(`👧 Murid "${name}" (${cat}) Berjaya Ditambah!`);
-    } else if(students.some(s => s.name === name)) {
-      showToast('⚠️ Nama murid ini sudah wujud!');
-    }
+    showLoading(true);
+    closeModal('addStudentModal');
+
+    google.script.run.withSuccessHandler(function(res) {
+      students = res.students;
+      records = res.records;
+      renderAll();
+      showLoading(false);
+      showToast(`👧 Murid "${name}" Berjaya Ditambah!`);
+    }).addStudent({ name: name, cat: cat });
   });
 
-  // --- LOGIK LAPORAN & REKOD ---
   function renderReports() {
     const summaryContainer = document.getElementById('summaryContainer');
     const tableBody = document.getElementById('reportTableBody');
@@ -952,12 +487,10 @@
     students.forEach(st => {
       const count = records.filter(r => r.student === st.name && r.status === 'Hadir').length;
       const icon = getStudentIcon(st.name);
-      const catBadge = st.cat === 'Al-Quran' ? '📖 Al-Quran' : '📗 Iqra\'';
-
       summaryContainer.innerHTML += `
         <div class="summary-box">
           <div style="font-size:13px; color:#6b5b60; font-weight:bold;">${icon} ${st.name}</div>
-          <div style="font-size:11px; color:#9d8189; margin-top:2px;">${catBadge}</div>
+          <div style="font-size:11px; color:#9d8189; margin-top:2px;">${st.cat === 'Al-Quran' ? '📖 Al-Quran' : '📗 Iqra\''}</div>
           <div class="val" style="margin-top:4px;">${count} Kelas</div>
         </div>
       `;
@@ -965,168 +498,94 @@
 
     tableBody.innerHTML = '';
     records.slice().sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(r => {
-      const badgeClass = r.status === 'Hadir' ? 'badge-hadir' : 'badge-cuti';
-      const icon = getStudentIcon(r.student);
       const isQuran = (r.cat === 'Al-Quran');
-      const catBadge = `<span class="badge-cat ${isQuran ? 'quran' : 'iqra'}">${isQuran ? '📖 Quran' : '📗 Iqra'}</span>`;
-
       tableBody.innerHTML += `
         <tr>
           <td><b>${r.date}</b></td>
-          <td>${icon} ${r.student}</td>
-          <td>${catBadge}</td>
-          <td><span class="${badgeClass}">${r.status}</span></td>
+          <td>${getStudentIcon(r.student)} ${r.student}</td>
+          <td><span class="badge-cat ${isQuran ? 'quran' : 'iqra'}">${isQuran ? '📖 Quran' : '📗 Iqra'}</span></td>
+          <td><span class="${r.status === 'Hadir' ? 'badge-hadir' : 'badge-cuti'}">${r.status}</span></td>
           <td>${r.notes || '-'}</td>
-          <td class="col-action"><button onclick="deleteRecord(${r.id})" style="border:none; background:none; color:red; cursor:pointer;">🗑️</button></td>
+          <td><button onclick="deleteRecord('${r.id}')" style="border:none; background:none; color:red; cursor:pointer;">🗑️</button></td>
         </tr>
       `;
     });
   }
 
   function deleteRecord(id) {
-    if(confirm('Adakah anda pasti mahu memadam rekod ini?')) {
-      records = records.filter(r => r.id !== id);
-      saveStorage();
-      renderReports();
-      renderCalendar();
-      showToast('🗑️ Rekod Berjaya Dipadam!');
+    if(confirm('Memadam rekod ini dari cloud?')) {
+      showLoading(true);
+      google.script.run.withSuccessHandler(function(res) {
+        students = res.students; records = res.records; renderAll(); showLoading(false);
+        showToast('🗑️ Rekod Dipadam Dari Cloud');
+      }).deleteRecord(id);
     }
   }
 
-  // --- LOGIK DATA MURID & DROPDOWN ---
   function populateStudentDropdowns() {
     const selectMain = document.getElementById('studentSelect');
     const selectModal = document.getElementById('modalStudentSelect');
+    const options = students.map(st => `<option value="${st.name}">${getStudentIcon(st.name)} ${st.name} (${st.cat === 'Al-Quran' ? '📖 Quran' : '📗 Iqra'})</option>`).join('');
 
-    const options = students.map(st => {
-      const icon = getStudentIcon(st.name);
-      const catTag = st.cat === 'Al-Quran' ? '📖 Quran' : '📗 Iqra';
-      return `<option value="${st.name}">${icon} ${st.name} (${catTag})</option>`;
-    }).join('');
-
-    if(selectMain) selectMain.innerHTML = options || '<option value="">-- Tiada Murid --</option>';
-    if(selectModal) selectModal.innerHTML = options || '<option value="">-- Tiada Murid --</option>';
+    if(selectMain) selectMain.innerHTML = options;
+    if(selectModal) selectModal.innerHTML = options;
   }
 
   function renderStudentManagement() {
-    populateStudentDropdowns();
+    autoSyncCat('studentSelect', 'classCatSelect');
     const tagList = document.getElementById('studentTagList');
     tagList.innerHTML = '';
-
     students.forEach(st => {
-      const icon = getStudentIcon(st.name);
       const isQuran = (st.cat === 'Al-Quran');
-      const catTag = `<span class="badge-cat ${isQuran ? 'quran' : 'iqra'}">${isQuran ? '📖 Quran' : '📗 Iqra'}</span>`;
-      
       tagList.innerHTML += `
         <div class="student-tag">
-          ${icon} <strong>${st.name}</strong> ${catTag}
+          ${getStudentIcon(st.name)} <strong>${st.name}</strong> <span class="badge-cat ${isQuran ? 'quran' : 'iqra'}">${isQuran ? '📖 Quran' : '📗 Iqra'}</span>
           <button class="btn-delete-sm" onclick="deleteStudent('${st.name}')">✕</button>
         </div>`;
     });
-
-    if(!document.getElementById('classDate').value) {
-      document.getElementById('classDate').valueAsDate = new Date();
-    }
+    if(!document.getElementById('classDate').value) document.getElementById('classDate').valueAsDate = new Date();
   }
 
   function deleteStudent(name) {
-    if(confirm(`Adakah anda pasti mahu memadam murid "${name}"?`)) {
-      students = students.filter(s => s.name !== name);
-      if(students.length === 0) {
-        students = [{ name: 'Alisya', cat: 'Al-Quran' }, { name: 'Aqil', cat: "Iqra'" }];
-      }
-      saveStorage();
-      renderStudentManagement();
-      renderReports();
-      renderCalendar();
-      showToast(`🗑️ Murid "${name}" Dipadam`);
+    if(confirm(`Memadam murid "${name}"?`)) {
+      showLoading(true);
+      google.script.run.withSuccessHandler(function(res) {
+        students = res.students; records = res.records; renderAll(); showLoading(false);
+        showToast(`🗑️ Murid Dipadam`);
+      }).deleteStudent(name);
     }
   }
 
   document.getElementById('attendanceForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const date = document.getElementById('classDate').value;
-    const studentName = document.getElementById('studentSelect').value;
+    const student = document.getElementById('studentSelect').value;
+    const cat = document.getElementById('classCatSelect').value;
     const status = document.getElementById('statusSelect').value;
     const notes = document.getElementById('notesInput').value.trim();
 
-    if(!date || !studentName) {
-      showToast('⚠️ Sila pastikan tarikh dan murid dipilih!');
-      return;
-    }
-
-    const stObj = getStudentObj(studentName);
-
-    records.push({ id: Date.now(), date, student: studentName, cat: stObj.cat, status, notes });
-    saveStorage();
-    
-    document.getElementById('notesInput').value = '';
-    renderCalendar();
-    renderReports();
-    showToast('✨ Kehadiran Berjaya Disimpan! ✨');
+    showLoading(true);
+    google.script.run.withSuccessHandler(function(res) {
+      students = res.students; records = res.records; renderAll(); showLoading(false);
+      showToast('☁️ Kehadiran Berjaya Disimpan ke Cloud!');
+    }).addRecord({ id: Date.now(), date: date, student: student, cat: cat, status: status, notes: notes });
   });
 
   document.getElementById('addStudentForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const nameInput = document.getElementById('newStudentName');
-    const catInput = document.getElementById('newStudentCat');
-    const name = nameInput.value.trim();
-    const cat = catInput.value;
+    const name = document.getElementById('newStudentName').value.trim();
+    const cat = document.getElementById('newStudentCat').value;
 
-    if(name && !students.some(s => s.name === name)) {
-      students.push({ name, cat });
-      saveStorage();
-      nameInput.value = '';
-      renderStudentManagement();
-      renderReports();
-      showToast(`👧 Murid "${name}" (${cat}) Berjaya Ditambah!`);
-    } else if(students.some(s => s.name === name)) {
-      showToast('⚠️ Nama murid ini sudah wujud!');
-    }
+    showLoading(true);
+    google.script.run.withSuccessHandler(function(res) {
+      students = res.students; records = res.records; renderAll(); showLoading(false);
+      document.getElementById('newStudentName').value = '';
+      showToast(`👧 Murid "${name}" Berjaya Ditambah!`);
+    }).addStudent({ name: name, cat: cat });
   });
 
-  // --- EXPORT & IMPORT BACKUP DATA ---
-  function exportData() {
-    const backupData = { students, records };
-    const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `Yan_Mengaji_Backup_${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    showToast('📤 Backup Berjaya Dimuat Turun!');
-  }
-
-  function importData(event) {
-    const file = event.target.files[0];
-    if(!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      try {
-        const data = JSON.parse(e.target.result);
-        if(data.students && data.records) {
-          students = data.students;
-          records = data.records;
-          saveStorage();
-          
-          switchTab(document.getElementById('tabBtnCalendar'), 'tab-calendar');
-          showToast('✨ Data Berjaya Dimuat Naik! ✨');
-        } else {
-          showToast('⚠️ Format fail backup tidak sah!');
-        }
-      } catch(err) {
-        showToast('⚠️ Ralat membaca fail JSON!');
-      }
-      event.target.value = '';
-    };
-    reader.readAsText(file);
-  }
-
-  // Inisialisasi Awal
-  populateStudentDropdowns();
-  renderCalendar();
-  renderStudentManagement();
+  // Load Data Dari Google Sheet Pada Permulaan
+  fetchCloudData();
 </script>
 
 </body>
